@@ -16,7 +16,11 @@ spec:
         app: myapp
     spec:
       containers:
-        - name: myapp-container
+        - name: myapp-backend-container
           image: akarsh1607/myapp-backend:latest
           ports:
             - containerPort: 8080
+        - name: myapp-frontend-container
+          image: akarsh1607/myapp-frontend:latest
+          ports:
+            - containerPort: 3000
