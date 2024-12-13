@@ -24,7 +24,7 @@ pipeline {
                   name: "workspace-volume"
                   readOnly: false
               - name: kubectl
-                image: bitnami/kubectl
+                image: lachlanevenson/k8s-kubectl
                 command:
                 - cat
                 tty: true
