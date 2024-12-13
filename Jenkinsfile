@@ -14,10 +14,15 @@ pipeline {
                 volumeMounts:
                 - name: docker-socket
                   mountPath: /var/run/docker.sock
-              volumes:
-              - name: docker-socket
-                hostPath:
-                  path: /var/run/docker.sock
+              - name: node
+                image: node:14
+                command:
+                - cat
+                tty: true
+            volumes:
+            - name: docker-socket
+              hostPath:
+                path: /var/run/docker.sock
             """
         }
     }
@@ -48,12 +53,13 @@ pipeline {
         }
         stage('Test') {
             steps {
-                echo 'Running backend tests...'
-                // Add backend test commands here, e.g., using Mocha or Jest
-                // sh 'cd Backend && npm install && npm test'
+                container('node') {
+                    echo 'Running backend tests...'
+                    // Add backend test commands here, e.g., using Mocha or Jest
 
-                echo 'Running frontend tests...'
-                sh 'cd Frontend && npm install && npm run test'
+                    echo 'Running frontend tests...'
+                    sh 'cd Frontend && npm install && npm run test'
+                }
             }
         }
         stage('Deploy') {
