@@ -15,14 +15,20 @@ pipeline {
                 - name: docker-socket
                   mountPath: /var/run/docker.sock
               - name: node
-                image: node:14
+                image: node:18
                 command:
                 - cat
                 tty: true
+                volumeMounts:
+                - mountPath: "/home/jenkins/agent"
+                  name: "workspace-volume"
+                  readOnly: false
               volumes:
               - name: docker-socket
                 hostPath:
                   path: /var/run/docker.sock
+              - name: workspace-volume
+                emptyDir: {}
             """
         }
     }
