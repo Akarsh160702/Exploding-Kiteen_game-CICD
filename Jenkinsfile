@@ -28,6 +28,10 @@ pipeline {
                 command:
                 - cat
                 tty: true
+                volumeMounts:
+                - mountPath: "/home/jenkins/agent"
+                  name: "workspace-volume"
+                  readOnly: false
               volumes:
               - name: docker-socket
                 hostPath:
@@ -77,7 +81,7 @@ pipeline {
             steps {
                 echo 'Deploying to Kubernetes...'
                 container('kubectl') {
-                    sh 'kubectl apply -f k8s/deployment.yaml'
+                    sh '/bin/sh -c "kubectl apply -f k8s/deployment.yaml"'
                 }
             }
         }
