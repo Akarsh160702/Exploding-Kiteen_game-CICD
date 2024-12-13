@@ -19,10 +19,10 @@ pipeline {
                 command:
                 - cat
                 tty: true
-            volumes:
-            - name: docker-socket
-              hostPath:
-                path: /var/run/docker.sock
+              volumes:
+              - name: docker-socket
+                hostPath:
+                  path: /var/run/docker.sock
             """
         }
     }
