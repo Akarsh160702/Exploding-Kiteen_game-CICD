@@ -24,7 +24,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git credentialsId: 'github-credential', url: 'https://github.com/Akarsh160702/delhivery.git', branch: 'main'
+                git credentialsId: 'github-credentials', url: 'https://github.com/Akarsh160702/delhivery.git'
             }
         }
         stage('Build') {
@@ -32,8 +32,17 @@ pipeline {
                 container('docker') {
                     sh 'docker build -t akarsh1607/myapp-backend:latest ./Backend'
                     sh 'docker build -t akarsh1607/myapp-frontend:latest ./Frontend'
-                    sh 'docker push akarsh1607/myapp-backend:latest'
-                    sh 'docker push akarsh1607/myapp-frontend:latest'
+                }
+            }
+        }
+        stage('Push') {
+            steps {
+                container('docker') {
+                    withCredentials([usernamePassword(credentialsId: 'docker-hub-credentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                        sh 'echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin'
+                        sh 'docker push akarsh1607/myapp-backend:latest'
+                        sh 'docker push akarsh1607/myapp-frontend:latest'
+                    }
                 }
             }
         }
