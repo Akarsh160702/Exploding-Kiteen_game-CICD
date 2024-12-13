@@ -24,7 +24,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git credentialsId: 'github-pat', url: 'https://github.com/Akarsh160702/delhivery.git'
+                git credentialsId: 'github-credential', url: 'https://github.com/Akarsh160702/delhivery.git'
             }
         }
         stage('Build') {
