@@ -22,18 +22,29 @@ pipeline {
         }
     }
     stages {
+        stage('Checkout') {
+            steps {
+                git credentialsId: 'github-credential', url: 'https://github.com/Akarsh160702/delhivery.git'
+            }
+        }
         stage('Build') {
             steps {
                 container('docker') {
-                    sh 'docker build -t myapp-backend ./Backend'
-                    sh 'docker build -t myapp-frontend ./Frontend'
+                    sh 'docker build -t akarsh1607/myapp-backend:latest ./Backend'
+                    sh 'docker build -t akarsh1607/myapp-frontend:latest ./Frontend'
+                    sh 'docker push akarsh1607/myapp-backend:latest'
+                    sh 'docker push akarsh1607/myapp-frontend:latest'
                 }
             }
         }
         stage('Test') {
             steps {
-                echo 'Running tests...'
-                // Add your test commands here
+                echo 'Running backend tests...'
+                // Add backend test commands here, e.g., using Mocha or Jest
+                // sh 'cd Backend && npm install && npm test'
+
+                echo 'Running frontend tests...'
+                sh 'cd Frontend && npm install && npm run test'
             }
         }
         stage('Deploy') {
